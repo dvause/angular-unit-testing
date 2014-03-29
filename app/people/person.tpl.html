@@ -1,0 +1,30 @@
+<div ng-show="personCtrl.message" class="alert alert-success">{{personCtrl.message}}</div>
+
+<h3 ng-show="personCtrl.person._id">Edit Person: {{personCtrl.person._id}}</h3>
+<h3 ng-hide="personCtrl.person._id">Add New Person</h3>
+
+<form role="form" class="form-horizontal">
+  <div class="form-group">
+    <label for="firstName" class="col-md-2">First Name:</label>
+    <div class="col-md-6">
+      <input class="form-control" id="firstName" ng-model="personCtrl.person.firstName"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="lastName" class="col-md-2">Last Name:</label>
+    <div class="col-md-6">
+      <input class="form-control" id="lastName" ng-model="personCtrl.person.lastName"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="email" class="col-md-2">Email:</label>
+    <div class="col-md-6">
+      <input class="form-control" id="email" ng-model="personCtrl.person.email"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-md-10">
+      <button type="button" class="btn btn-warning" ng-click="personCtrl.savePerson(personCtrl.person)">Save Person</button>
+    </div>
+  </div>
+</form>

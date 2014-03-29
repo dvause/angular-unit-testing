@@ -1,24 +1,54 @@
-<h4>Hello, People!</h4>
+<h1>Hello, People!</h1>
+
+
 
 <div class="row">
-  <form role="form">
-    <div class="col-md-2">
-    <input type="text" class="form-control" ng-model="searchText" placeholder="Search"/>
-    </div>
-  </form>
+  <div class="col-md-6">
+    <form role="form">
+      <div class="col-md-2">
+        <input type="text" class="form-control" ng-model="searchText" placeholder="Search"/>
+      </div>
+    </form>
+  </div>
+  <div class="col-md-6 pull-right">
+    <button class="btn btn-info" ui-sref="person()">Add New Person</button>
+  </div>
 </div>
+
+
+<div ng-show="peopleCtrl.message.display" ng-class="peopleCtrl.message.class" class="alert">{{peopleCtrl.message.message}}</div>
+
 
 <div class="row">
   <div class="col-lg-4">
     <table class="table table-hover">
       <tr ng-repeat="person in peopleCtrl.people | filter:searchText">
-        <td>{{person.firstName}} {{person.lastName}}</td>
+        <td ng-click="peopleCtrl.selectPerson(person)">{{person.firstName}} {{person.lastName}}</td>
       </tr>
     </table>
   </div>
 
-  <div class="col-log-8">
+  <div class="col-log-8 pull-right" ng-show="peopleCtrl.selectedPerson.firstName">
+    <h4>Selected Person</h4>
+    <table class="table">
+      <tr>
+        <td>First Name:</td>
+        <td>{{peopleCtrl.selectedPerson.firstName}}</td>
+      </tr>
+      <tr>
+        <td>Last Name:</td>
+        <td>{{peopleCtrl.selectedPerson.lastName}}</td>
+      </tr>
+      <tr>
+        <td>Email:</td>
+        <td>{{peopleCtrl.selectedPerson.email}}</td>
+      </tr>
 
+    </table>
+    <div class="row pull-right">
+      <button class="btn btn-info" ui-sref="person({id: peopleCtrl.selectedPerson._id})">Edit</button>
+      <button class="btn btn-danger" ng-click="peopleCtrl.deletePerson(peopleCtrl.selectedPerson)">Delete</button>
+    </div>
   </div>
 
 </div>
