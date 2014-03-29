@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+  <title>
+
+  </title>
+</head>
+<body ng-controller="AppController">
+
+<ul>
+  <li><a ui-sref="home">Home</a></li>
+  <li><a ui-sref="test({urlStateParam:'foo', myState:'bar' })">Test</a></li>
+</ul>
+hello
+
+<div ui-view></div>
+
+<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+<script type="text/javascript" src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script type="text/javascript" src="app/app.js"></script>
+<script type="text/javascript" src="app/controller.js"></script>
+</body>
+
+</html>
