@@ -43,6 +43,7 @@ angular.module('myapp.people', [
           message: 'Deleted person: ' + person._id,
           display:true
         };
+        peopleCtrl.selectedPerson = null;
         $http.get('http://localhost:3500/api/people').success(function(result) {
           peopleCtrl.people = result;
         });

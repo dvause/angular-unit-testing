@@ -1,6 +1,6 @@
 <h1>Hello, People!</h1>
 
-
+<div ng-show="peopleCtrl.message.display" ng-class="peopleCtrl.message.class" class="alert">{{peopleCtrl.message.message}}</div>
 
 <div class="row">
   <div class="col-lg-4">
@@ -13,8 +13,6 @@
   </div>
 </div>
 
-<div ng-show="peopleCtrl.message.display" ng-class="peopleCtrl.message.class" class="alert">{{peopleCtrl.message.message}}</div>
-
 <div class="row">
   <div class="col-lg-4">
     <table class="table table-hover">
@@ -24,7 +22,7 @@
     </table>
   </div>
 
-  <div class="col-lg-8 pull-right" ng-show="peopleCtrl.selectedPerson.firstName">
+  <div class="col-lg-8 pull-right" ng-show="peopleCtrl.selectedPerson">
     <h4>Selected Person</h4>
     <table class="table">
       <tr>
@@ -46,5 +44,4 @@
       <button class="btn btn-danger" ng-click="peopleCtrl.deletePerson(peopleCtrl.selectedPerson)">Delete</button>
     </div>
   </div>
-
 </div>
