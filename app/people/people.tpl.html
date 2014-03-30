@@ -3,21 +3,17 @@
 
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col-lg-4">
     <form role="form">
-      <div class="col-md-2">
         <input type="text" class="form-control" ng-model="searchText" placeholder="Search"/>
-      </div>
     </form>
   </div>
-  <div class="col-md-6 pull-right">
+  <div class="col-lg-8 pull-right">
     <button class="btn btn-info" ui-sref="person()">Add New Person</button>
   </div>
 </div>
 
-
 <div ng-show="peopleCtrl.message.display" ng-class="peopleCtrl.message.class" class="alert">{{peopleCtrl.message.message}}</div>
-
 
 <div class="row">
   <div class="col-lg-4">
@@ -28,7 +24,7 @@
     </table>
   </div>
 
-  <div class="col-log-8 pull-right" ng-show="peopleCtrl.selectedPerson.firstName">
+  <div class="col-lg-8 pull-right" ng-show="peopleCtrl.selectedPerson.firstName">
     <h4>Selected Person</h4>
     <table class="table">
       <tr>
