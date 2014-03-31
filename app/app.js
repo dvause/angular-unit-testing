@@ -14,7 +14,7 @@ angular.module('myapp', [
   .controller('AppController', function($scope, $state, $location) {
     $scope.setPage = function(page) {
       $state.transitionTo(page);
-    }
+    };
     $scope.isActive = function (viewLocation) {
       return viewLocation === $location.path();
     };
