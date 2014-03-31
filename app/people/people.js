@@ -17,7 +17,7 @@ angular.module('myapp.people', [
 	})
 
 
-	.controller('PeopleController', function peopleCtrl($http, $log, PeopleService) {
+	.controller('PeopleController', function peopleCtrl($http, PeopleService) {
 		var peopleCtrl = this;
 		peopleCtrl.message = null;
 		peopleCtrl.selectedPerson = null;
@@ -28,8 +28,6 @@ angular.module('myapp.people', [
 
 
 		peopleCtrl.selectPerson = function (person) {
-			$log.debug('person:' + person);
-			console.log('PeopleService: ' + PeopleService);
 			PeopleService.getPerson(person._id).then(function (data) {
 				peopleCtrl.selectedPerson = data;
 			})
@@ -50,7 +48,7 @@ angular.module('myapp.people', [
 		};
 	})
 
-	.controller('PersonController', function personCtrl($stateParams, $http, $log, PeopleService) {
+	.controller('PersonController', function personCtrl($stateParams, $http, PeopleService) {
 		var personCtrl = this;
 		personCtrl.message = null;
 
@@ -87,11 +85,10 @@ angular.module('myapp.people', [
 		}
 	})
 
-	.service('PeopleService', function PeopleService($q, $http, $log) {
+	.service('PeopleService', function PeopleService($q, $http) {
 		var peopleService = this;
 
 		peopleService.getPeople = function () {
-			$log.debug('called peopleService.getPeople()');
 			var d = $q.defer();
 			$http.get('http://localhost:3500/api/people')
 				.success(function (data) {
@@ -104,7 +101,6 @@ angular.module('myapp.people', [
 		};
 
 		peopleService.getPerson = function(person_id) {
-			$log.debug('called peopleService.getPerson(person_id)');
 			var d = $q.defer();
 			$http.get('http://localhost:3500/api/people/' + person_id)
 				.success(function (data) {
@@ -117,7 +113,6 @@ angular.module('myapp.people', [
 		};
 
 		peopleService.savePerson = function (person) {
-			$log.debug('caled peopleService.savePerson(person)');
 			var d = $q.defer();
 			$http.post('http://localhost:3500/api/people', person)
 				.success(function (data) {
@@ -130,7 +125,6 @@ angular.module('myapp.people', [
 		};
 
 		peopleService.updatePerson = function (person) {
-			$log.debug('called peopleService.updatePerson(person)');
 			var d = $q.defer();
 			$http.put('http://localhost:3500/api/people/' + person._id, person)
 				.success(function (data) {
@@ -143,7 +137,6 @@ angular.module('myapp.people', [
 		};
 
 		peopleService.deletePerson = function (id) {
-			$log.debug('called deletePerson(id)');
 			var d = $q.defer();
 			$http.delete('http://localhost:3500/api/people/' + id)
 				.success(function (data) {
@@ -155,6 +148,5 @@ angular.module('myapp.people', [
 			return d.promise;
 		}
 	})
-
 
 ;
