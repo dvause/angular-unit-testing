@@ -49,7 +49,6 @@ angular.module('myapp.people', [
         });
       })
     };
-
   })
 
   .controller('PersonController', function personCtrl($stateParams, $http, $log) {
@@ -79,4 +78,20 @@ angular.module('myapp.people', [
       }
     }
   })
+
+  .directive('person', function () {
+    return {
+      restrict: "E",
+      transclude:true,
+      scope: {
+        firstName:"@",
+        lastName:"@",
+        email:"@"
+      },
+      template: '<table class="table">\n  <tr>\n    <td>First Name:</td>\n    <td>{{firstName}}</td>\n  </tr>\n  <tr>\n    <td>Last Name:</td>\n    <td>{{lastName}}</td>\n  </tr>\n  <tr>\n    <td>Email:</td>\n    <td>{{email}}</td>\n  </tr>\n</table>'
+    }
+  })
+
+
+
 ;

@@ -24,7 +24,8 @@
 
   <div class="col-lg-8 pull-right" ng-show="peopleCtrl.selectedPerson">
     <h4>Selected Person</h4>
-    <table class="table">
+    <person first_name="{{peopleCtrl.selectedPerson.firstName}}" last_name="{{peopleCtrl.selectedPerson.lastName}}" email="{{peopleCtrl.selectedPerson.email}}"></person>
+    <!--<table class="table">
       <tr>
         <td>First Name:</td>
         <td>{{peopleCtrl.selectedPerson.firstName}}</td>
@@ -38,7 +39,7 @@
         <td>{{peopleCtrl.selectedPerson.email}}</td>
       </tr>
 
-    </table>
+    </table>-->
     <div class="row pull-right">
       <button class="btn btn-info" ui-sref="person({id: peopleCtrl.selectedPerson._id})">Edit</button>
       <button class="btn btn-danger" ng-click="peopleCtrl.deletePerson(peopleCtrl.selectedPerson)">Delete</button>
