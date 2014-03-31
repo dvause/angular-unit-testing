@@ -1,97 +1,160 @@
 angular.module('myapp.people', [
-  'ui.router'
+	'ui.router'
 ])
 
-  .config(function($stateProvider) {
-    $stateProvider
-      .state('people', {
-        url: '/people',
-        templateUrl: 'app/people/people.tpl.html',
-        controller: 'PeopleController as peopleCtrl'
-      })
-      .state('person', {
-        url: '/person/:id',
-        templateUrl: 'app/people/person.tpl.html',
-        controller: 'PersonController as personCtrl'
-      })
-  })
+	.config(function ($stateProvider) {
+		$stateProvider
+			.state('people', {
+				url: '/people',
+				templateUrl: 'app/people/people.tpl.html',
+				controller: 'PeopleController as peopleCtrl'
+			})
+			.state('person', {
+				url: '/person/:id',
+				templateUrl: 'app/people/person.tpl.html',
+				controller: 'PersonController as personCtrl'
+			})
+	})
 
 
-  .controller('PeopleController', function peopleCtrl($http, $log) {
-    var peopleCtrl = this;
-    peopleCtrl.message = null;
-    peopleCtrl.selectedPerson = null;
+	.controller('PeopleController', function peopleCtrl($http, $log, PeopleService) {
+		var peopleCtrl = this;
+		peopleCtrl.message = null;
+		peopleCtrl.selectedPerson = null;
+
+		PeopleService.getPeople().then(function (data) {
+			peopleCtrl.people = data;
+		});
 
 
-    $http.get('http://localhost:3500/api/people').success(function(result) {
-      peopleCtrl.people = result;
-    });
+		peopleCtrl.selectPerson = function (person) {
+			$log.debug('person:' + person);
+			console.log('PeopleService: ' + PeopleService);
+			PeopleService.getPerson(person._id).then(function (data) {
+				peopleCtrl.selectedPerson = data;
+			})
+		};
 
-    peopleCtrl.selectPerson = function(person) {
-      $http.get('http://localhost:3500/api/people/' + person._id).success(function(data) {
-        $log.debug('selected:' + data);
-        peopleCtrl.selectedPerson = data;
-      });
-    };
+		peopleCtrl.deletePerson = function (person) {
+			PeopleService.deletePerson(person._id).then(function (data) {
+				peopleCtrl.message = {
+					class: 'alert-danger',
+					message: 'Deleted person: ' + data._id,
+					display: true
+				};
+				peopleCtrl.selectedPerson = null;
+				PeopleService.getPeople().then(function (data) {
+					peopleCtrl.people = data;
+				})
+			});
+		};
+	})
 
-    peopleCtrl.deletePerson = function(person) {
-      $log.debug(person)
-      $http.delete('http://localhost:3500/api/people/' + person._id).success(function(data) {
-        $log.debug('deleted' + person);
-        peopleCtrl.message = {
-          class: 'alert-danger',
-          message: 'Deleted person: ' + person._id,
-          display:true
-        };
-        peopleCtrl.selectedPerson = null;
-        $http.get('http://localhost:3500/api/people').success(function(result) {
-          peopleCtrl.people = result;
-        });
-      })
-    };
-  })
+	.controller('PersonController', function personCtrl($stateParams, $http, $log, PeopleService) {
+		var personCtrl = this;
+		personCtrl.message = null;
 
-  .controller('PersonController', function personCtrl($stateParams, $http, $log) {
-    var personCtrl = this;
-    personCtrl.message = null;
+		if ($stateParams.id) {
+			PeopleService.getPerson($stateParams.id).then(function (data) {
+				personCtrl.person = data;
+			});
+		}
 
-    if ($stateParams.id) {
-      $http.get('http://localhost:3500/api/people/' + $stateParams.id).success(function(data) {
-        personCtrl.person = data;
-        $log.debug(data);
-      });
-    }
+		personCtrl.savePerson = function (person) {
+			if (person._id) {
+				PeopleService.updatePerson(person).then(function (data) {
+					personCtrl.person = data;
+					personCtrl.message = "Updated person";
+				});
+			} else {
+				PeopleService.savePerson(person).then(function (data) {
+					personCtrl.person = data;
+					personCtrl.message = "Saved new person";
+				});
+			}
+		}
+	})
 
-    personCtrl.savePerson = function(person) {
-      if (person._id) {
-        $http.put('http://localhost:3500/api/people/' + person._id, person).success(function(data) {
-          personCtrl.person = data;
-          personCtrl.message = "Updated person";
-          $log.debug(data);
-        });
-      } else {
-        $http.post('http://localhost:3500/api/people', person).success(function(data) {
-          personCtrl.person = data;
-          personCtrl.message = "Saved new person";
-          $log.debug(data);
-        });
-      }
-    }
-  })
+	.directive('person', function () {
+		return {
+			restrict: "E",
+			scope: {
+				firstName: "@",
+				lastName: "@",
+				email: "@"
+			},
+			template: '<table class="table">\n  <tr>\n    <td>First Name:</td>\n    <td>{{firstName}}</td>\n  </tr>\n  <tr>\n    <td>Last Name:</td>\n    <td>{{lastName}}</td>\n  </tr>\n  <tr>\n    <td>Email:</td>\n    <td>{{email}}</td>\n  </tr>\n</table>'
+		}
+	})
 
-  .directive('person', function () {
-    return {
-      restrict: "E",
-      transclude:true,
-      scope: {
-        firstName:"@",
-        lastName:"@",
-        email:"@"
-      },
-      template: '<table class="table">\n  <tr>\n    <td>First Name:</td>\n    <td>{{firstName}}</td>\n  </tr>\n  <tr>\n    <td>Last Name:</td>\n    <td>{{lastName}}</td>\n  </tr>\n  <tr>\n    <td>Email:</td>\n    <td>{{email}}</td>\n  </tr>\n</table>'
-    }
-  })
+	.service('PeopleService', function PeopleService($q, $http, $log) {
+		var peopleService = this;
 
+		peopleService.getPeople = function () {
+			$log.debug('called peopleService.getPeople()');
+			var d = $q.defer();
+			$http.get('http://localhost:3500/api/people')
+				.success(function (data) {
+					d.resolve(data);
+				})
+				.error(function (data) {
+					d.reject(data);
+				});
+			return d.promise;
+		};
+
+		peopleService.getPerson = function(person_id) {
+			$log.debug('called peopleService.getPerson(person_id)');
+			var d = $q.defer();
+			$http.get('http://localhost:3500/api/people/' + person_id)
+				.success(function (data) {
+					d.resolve(data);
+				})
+				.error(function (data) {
+					d.reject(data);
+				});
+			return d.promise;
+		};
+
+		peopleService.savePerson = function (person) {
+			$log.debug('caled peopleService.savePerson(person)');
+			var d = $q.defer();
+			$http.post('http://localhost:3500/api/people', person)
+				.success(function (data) {
+					d.resolve(data);
+				})
+				.error(function (data) {
+					d.reject(data);
+				});
+			return d.promise;
+		};
+
+		peopleService.updatePerson = function (person) {
+			$log.debug('called peopleService.updatePerson(person)');
+			var d = $q.defer();
+			$http.put('http://localhost:3500/api/people/' + person._id, person)
+				.success(function (data) {
+					d.resolve(data);
+				})
+				.error(function (data) {
+					d.reject(data);
+				});
+			return d.promise;
+		};
+
+		peopleService.deletePerson = function (id) {
+			$log.debug('called deletePerson(id)');
+			var d = $q.defer();
+			$http.delete('http://localhost:3500/api/people/' + id)
+				.success(function (data) {
+					d.resolve(data);
+				})
+				.error(function (data) {
+					d.reject(data);
+				});
+			return d.promise;
+		}
+	})
 
 
 ;
