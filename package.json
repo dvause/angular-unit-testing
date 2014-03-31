@@ -20,5 +20,12 @@
     "express": "^3.4.8",
     "mongoose": "^3.8.8",
     "cors": "^2.2.0"
-  }
+  },
+	"devDependencies": {
+		"karma-chrome-launcher": "^0.1.2",
+		"karma-jasmine": "^0.1.5",
+		"requirejs": "^2.1.11",
+		"karma-phantomjs-launcher": "^0.1.2",
+		"karma": "^0.12.1"
+	}
 }
