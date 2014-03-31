@@ -1,6 +1,7 @@
 angular.module('people', [
 	'ui.router',
-	'people-service'
+	'people-service',
+	'myconfig'
 ])
 
 	.config(function ($stateProvider) {
