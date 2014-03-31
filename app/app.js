@@ -1,22 +1,22 @@
 angular.module('myapp', [
-  'ui.router',
-  'myapp.people'
+	'ui.router',
+	'myconfig',
+	'people',
+	'person',
+	'people-service'
 ])
-  .config(function($urlRouterProvider, $stateProvider) {
-    $stateProvider
-      .state('home', {
-        url: '/',
-        templateUrl: 'app/home.tpl.html'
-      });
-    $urlRouterProvider.otherwise('/');
-  })
+	.config(function ($urlRouterProvider, $stateProvider) {
+		$stateProvider
+			.state('home', {
+				url: '/',
+				templateUrl: 'app/home.tpl.html'
+			});
+		$urlRouterProvider.otherwise('/');
+	})
 
-  .controller('AppController', function($scope, $state, $location) {
-    $scope.setPage = function(page) {
-      $state.transitionTo(page);
-    };
-    $scope.isActive = function (viewLocation) {
-      return viewLocation === $location.path();
-    };
-  })
+	.controller('AppController', function ($scope, $state, $location) {
+		$scope.isActive = function (viewLocation) {
+			return viewLocation === $location.path();
+		};
+	})
 ;
