@@ -45,7 +45,7 @@ describe("Unit Test: people-service", function() {
 			//console.log(result); //just to show that no call is actually made to the service
 			expect(result).toEqual(returnData);
 		})
-	})
+	});
 
 	describe("savePerson()", function() {
 		it("should post a new person record to the server", function() {

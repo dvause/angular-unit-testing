@@ -25,8 +25,7 @@ describe('Unit Test: people module', function() {
 		});
 	}));
 
-
-	describe("PeopleController" ,function() {
+	describe("Controller: PeopleController", function() {
 		it("should fetch a list of people from a backend service and populate the peopleCtrl.people property", function() {
 			peopleCtrl.init(); //get the list of people by calling the peopleService
 			$scope.$digest(); //run the digest cycle
@@ -39,5 +38,5 @@ describe('Unit Test: people module', function() {
 			$scope.$digest();
 			expect(peopleCtrl.selectedPerson).not.toBe(null);
 		})
-	})
+	});
 });
