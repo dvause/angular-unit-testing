@@ -61,7 +61,4 @@ describe("Unit Test: people-service", function() {
 			expect(result).toEqual(returnData);
 		})
 	})
-
-
-
 });

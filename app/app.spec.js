@@ -18,6 +18,4 @@ describe('Unit Test: myapp module', function() {
 			expect($scope.isActive('/people')).toBe(false);
 		})
 	});
-
-
 });
