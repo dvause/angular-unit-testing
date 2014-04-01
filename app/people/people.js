@@ -13,10 +13,11 @@ angular.module('people', [
 			})
 	})
 
-	.controller('PeopleController', function peopleCtrl($http, PeopleService) {
+	.controller('PeopleController', ['$http', 'PeopleService', function peopleCtrl($http, PeopleService) {
 		var peopleCtrl = this;
 		peopleCtrl.message = null;
 		peopleCtrl.selectedPerson = null;
+		peopleCtrl.people = [];
 
 		peopleCtrl.init = function() {
 			PeopleService.getPeople().then(function (data) {
@@ -43,6 +44,6 @@ angular.module('people', [
 				})
 			});
 		};
-	})
+	}])
 
 ;
