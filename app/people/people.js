@@ -18,10 +18,11 @@ angular.module('people', [
 		peopleCtrl.message = null;
 		peopleCtrl.selectedPerson = null;
 
-		PeopleService.getPeople().then(function (data) {
-			peopleCtrl.people = data;
-		});
-
+		peopleCtrl.init = function() {
+			PeopleService.getPeople().then(function (data) {
+				peopleCtrl.people = data;
+			});
+		};
 
 		peopleCtrl.selectPerson = function (person) {
 			PeopleService.getPerson(person._id).then(function (data) {
